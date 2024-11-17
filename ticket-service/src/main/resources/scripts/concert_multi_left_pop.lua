@@ -1,5 +1,3 @@
--- Lua腳本: concert_multi_left_pop.lua
-
 -- KEYS[1] 是 seatAreaKey，表示座位區域的 Redis 鍵，例如 "concert:1-A-{k2}"
 -- ARGV[1] 是要彈出的座位數量
 
@@ -12,7 +10,7 @@ local seats = {}
 
 -- 循環彈出指定數量的座位
 for i = 1, quantity do
-    -- 使用 LPOP 命令從左側彈出一個座位
+    -- 從左側彈出一個座位
     local seat = redis.call('LPOP', seatAreaKey)
 
     -- 如果成功彈出座位，將其加入 seats 表中

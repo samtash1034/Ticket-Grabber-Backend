@@ -14,9 +14,7 @@ public class RabbitMQConfig {
         return new Queue("concertOrderQueue", true); // true 表示隊列是持久的
     }
 
-    /**
-     * 監聽器無限重試消息處理，因為消息在處理失敗後會被重新放回隊列，然後又會重新被消費
-     */
+
     @Bean
     public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(ConnectionFactory connectionFactory) {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();

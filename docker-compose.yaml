@@ -64,5 +64,6 @@ networks:
   redis-net:
     driver: bridge
 
-# 创建集群 (需要安装 redis-cli => 使用 `brew install redis` 安装)
+# TODO 換成自己的 ip
+# 創建 cluster (需要安装 redis-cli => 使用 `brew install redis` 安装)
 # redis-cli --cluster create 192.168.0.109:7001 192.168.0.109:7002 192.168.0.109:7003 --cluster-replicas 0

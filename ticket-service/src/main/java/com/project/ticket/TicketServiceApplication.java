@@ -7,11 +7,10 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 
-@EnableDiscoveryClient  // 啟用 Zookeeper 的服務註冊與發現
+@EnableDiscoveryClient  // 啟用 Zookeeper 
 @EnableFeignClients  // 啟用 Feign
 @ComponentScan(basePackages = {"com.project.common", "com.project.ticket"})
 @MapperScan("com.project.orm.mapper")
-//@Import(RabbitMQConfig.class)
 @SpringBootApplication
 public class TicketServiceApplication {
 

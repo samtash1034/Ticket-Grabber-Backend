@@ -8,7 +8,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@EnableDiscoveryClient  // 啟用 Zookeeper 的服務註冊與發現
+@EnableDiscoveryClient  // 啟用 Zookeeper 
 @EnableFeignClients  // 啟用 Feign
 @ComponentScan(basePackages = {"com.project.common", "com.project.user"})
 @MapperScan("com.project.orm.mapper")

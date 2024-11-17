@@ -9,6 +9,7 @@ spring:
         native:
           search-locations: file:///Users/sam_huang/Desktop/ticket-grabber/config-server/src/main/resources # TODO 改成自己的路徑
 
+  # TODO 修改連線資訊
   datasource:
     url: jdbc:mysql://hnd1.clusters.zeabur.com:31911/ticket-grabber
     username: root

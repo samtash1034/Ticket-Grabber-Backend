@@ -8,7 +8,6 @@ import java.util.HashMap;
 @Data
 public class BaseController {
 
-
     protected ApiRes handleResponse(Object data) {
         ApiRes ApiRes = new ApiRes();
         if (data != null) {

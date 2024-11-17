@@ -26,23 +26,23 @@ import java.util.HashMap;
 @Component
 public class ManageAspect {
 
-    private static final String RES_ERROR_MESSAGE = "服务器错误，请联系管理员，错误识别码:%s";
-    private static final String LOG_ERROR_MESSAGE = "错误识别码: %s%n%s";
+    private static final String RES_ERROR_MESSAGE = "伺服器錯誤，請聯繫管理員，錯誤識別碼:%s";
+    private static final String LOG_ERROR_MESSAGE = "錯誤識別碼: %s%n%s";
 
-    // 修改 Pointcut，避免直接引用 user 和 article 模块的包
+    // 修改 Pointcut，避免直接引用 user 和 article 模組的包名
     @Pointcut("@within(org.springframework.web.bind.annotation.RestController)")
     public void controllerPoint() {
     }
 
     /**
-     * 1. 标准化返回
-     * 2. 错误信息处理
-     * 3. 统计 API 使用时间
-     * 4. 验证 token
+     * 1. 標準化回應
+     * 2. 錯誤訊息處理
+     * 3. 統計 API 使用時間
+     * 4. 驗證 token
      *
-     * @param pjp
-     * @return
-     * @throws Throwable
+     * @param pjp 切面連接點
+     * @return 標準化的 API 回應
+     * @throws Throwable 處理過程中的異常
      */
     @Around("controllerPoint()")
     @Order(9)
@@ -54,14 +54,12 @@ public class ManageAspect {
 
         try {
             apiRes = handleProceedResult(apiRes, pjp.proceed());
-
             setSuccessResponse(apiRes);
         } catch (BaseException e) {
             log.error(e.getMessage(), e);
             setResponseStatusCode(e, response);
 
             String message = MessageFormatterUtil.formatMessage(e.getCode().getMsg(), e.getArgs());
-
             handleBaseExceptionResponse(apiRes, e, message);
         } catch (Exception e) {
             String errorUuid = UUIDUtil.generateUuid();
@@ -69,11 +67,10 @@ public class ManageAspect {
             log.error(String.format(LOG_ERROR_MESSAGE, errorUuid, e.getMessage()), e);
 
             response.setStatus(500);
-
             handleOtherExceptionResponse(apiRes, resErrorMessage);
         } finally {
             stopWatch.stop();
-            log.info("[API Process] Controller name: {}, 执行时间(纳秒): {}", pjp.getSignature().getName(), stopWatch.getNanoTime());
+            log.info("[API Process] Controller 名稱: {}, 執行時間 (納秒): {}", pjp.getSignature().getName(), stopWatch.getNanoTime());
         }
 
         return apiRes;
