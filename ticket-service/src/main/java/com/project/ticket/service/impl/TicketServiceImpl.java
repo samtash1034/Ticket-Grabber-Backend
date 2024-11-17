@@ -4,7 +4,6 @@ import com.project.common.enums.CommonCode;
 import com.project.common.exception.BaseException;
 import com.project.common.message.ConcertOrderMessage;
 import com.project.common.util.UUIDUtil;
-import com.project.orm.mapper.ConcertMapper;
 import com.project.orm.mapper.OrderMapper;
 import com.project.ticket.producer.ConcertOrderProducer;
 import com.project.ticket.request.GrabTicketRequest;
@@ -28,8 +27,6 @@ import java.util.Set;
 @Service
 public class TicketServiceImpl implements TicketService {
 
-    @Autowired
-    private ConcertMapper concertMapper;
     @Autowired
     private OrderMapper orderMapper;
     @Autowired
@@ -92,22 +89,6 @@ public class TicketServiceImpl implements TicketService {
 
         return response;
     }
-
-    private void method1(GrabTicketRequest req) {
-        // 一次只有一個人能執行下面這段程式
-        // synchronized 只有在單機有用
-        synchronized (this) {
-            int availableSeat = concertMapper.selectAvailableSeatByConcertId(req.getConcertId());
-            System.out.println("剩餘座位數量：" + availableSeat);
-
-            if (availableSeat > 0) {
-                concertMapper.decrementAvailableSeatByConcertId(req.getConcertId());
-            } else {
-                throw new BaseException(CommonCode.N40007, "沒有剩餘的的座位");
-            }
-        }
-    }
-
 
     private GrabTicketResponse method2(GrabTicketRequest req, String userId) {
         GrabTicketResponse response = new GrabTicketResponse();
