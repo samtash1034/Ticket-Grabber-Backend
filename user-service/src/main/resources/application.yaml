@@ -14,7 +14,3 @@ spring:
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
-
-  # 不需要數據源
-#  autoconfigure:
-#    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
