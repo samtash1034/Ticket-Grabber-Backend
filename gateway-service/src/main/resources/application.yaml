@@ -1,0 +1,35 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+            allowedHeaders: "*"
+      routes:
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/user/**
+        - id: ticket-service
+          uri: lb://ticket-service
+          predicates:
+            - Path=/api/ticket/**
+        - id: order-service
+          uri: lb://order-service
+          predicates:
+            - Path=/api/order/**
+    zookeeper:
+      connect-string: 127.0.0.1:2181
+      discovery:
+        root: /ticket-grabber

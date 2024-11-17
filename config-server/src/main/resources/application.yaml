@@ -1,0 +1,10 @@
+server:
+  port: 8888
+spring:
+  profiles:
+    active: native # 從本地加載配置
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: file:///Users/sam_huang/Desktop/ticket-grabber/config-server/src/main/resources

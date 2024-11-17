@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.orm.mapper.OrderMapper">
+
+    <insert id="insert" parameterType="com.project.orm.model.OrderModel">
+        INSERT INTO `order` (order_id, order_no, user_id, concert_id, seat, order_status, create_time, update_time, time_diff_seconds)
+        VALUES (#{orderId}, #{orderNo}, #{userId}, #{concertId}, #{seat}, #{orderStatus}, #{createTime}, #{updateTime}, #{timeDiffSeconds})
+    </insert>
+
+    <delete id="deleteAll">
+        DELETE FROM `order`;
+    </delete>
+    <select id="selectByOrderId" resultType="com.project.orm.model.OrderModel">
+        SELECT
+            order_id AS orderId,
+            order_no AS orderNo,
+            user_id AS userId,
+            concert_id AS concertId,
+            seat,
+            order_status AS orderStatus,
+            create_time AS createTime,
+            update_time AS updateTime,
+            time_diff_seconds AS timeDiffSeconds
+        FROM `order`
+        WHERE order_id = #{orderId}
+        ORDER BY order_no DESC
+    </select>
+
+</mapper>

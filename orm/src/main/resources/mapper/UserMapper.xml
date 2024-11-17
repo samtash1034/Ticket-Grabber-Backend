@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.orm.mapper.UserMapper">
+    <resultMap id="UserResultMap" type="com.project.orm.model.UserModel">
+        <id property="userId" column="id"/>
+        <result property="email" column="email"/>
+        <result property="name" column="name"/>
+        <result property="password" column="password"/>
+        <result property="birthday" column="birthday"/>
+        <result property="createUser" column="create_user"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, email, name, password, birthday, create_user, create_time, update_user, update_time
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="UserResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM user
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectByEmail" resultType="com.project.orm.model.UserModel">
+        SELECT
+            id,
+            email,
+            name,
+            password,
+            birthday,
+            create_user AS createUser,
+            create_time AS createTime,
+            update_user AS updateUser,
+            update_time AS updateTime
+        FROM user
+        WHERE email = #{email}
+    </select>
+
+
+    <insert id="insert" parameterType="com.project.orm.model.UserModel">
+        INSERT INTO user (id, email, name, password, birthday, create_user, create_time, update_user, update_time)
+        VALUES (#{id}, #{email}, #{name}, #{password}, #{birthday}, #{createUser}, #{createTime}, #{updateUser}, #{updateTime})
+    </insert>
+
+</mapper>

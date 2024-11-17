@@ -1,0 +1,20 @@
+#server:
+#  port: 8081
+
+spring:
+  application:
+    name: user-service
+  config:
+    import: "configserver:http://localhost:8888"
+
+  datasource:
+    url: jdbc:mysql://hnd1.clusters.zeabur.com:31911/ticket-grabber
+    username: root
+    password: UYV037TPkXbOc68u54t9swvpy1zK2GCq
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+
+  # 不需要數據源
+#  autoconfigure:
+#    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
