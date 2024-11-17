@@ -20,8 +20,8 @@ spring:
     password: guest
 
 jwt:
-  issuer: ticket-grabber
-  expire: 720
+
+
 
 key:
   publicKey: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDAMWVFi8JNG3Ukq5LSDJQZlTEoqedEZnWib+dHDSEsINhxp698rcyYD+4wAD1EUPGRS9Ag47CRUS4Q7qsEfaaBT3ZTyiutf82P+rTiOwGiBva/C9/eUhLsX9PG1T3ePliB9i+tAwWCcbYrl5MhW/452bnzGNEBij8SA83SPFclowIDAQAB

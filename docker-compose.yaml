@@ -49,16 +49,16 @@ services:
     ports:
       - "15672:15672"  # RabbitMQ 管理界面
       - "5672:5672"    # RabbitMQ AMQP 端口
-    networks:
-      - redis-net
+#    networks:
+#      - redis-net
 
   zookeeper:
     image: zookeeper:3.7
     container_name: zookeeper
     ports:
       - "2181:2181"  # Zookeeper 客户端端口
-    networks:
-      - redis-net
+#    networks:
+#      - redis-net
 
 networks:
   redis-net:

@@ -1,6 +1,5 @@
 package com.project.ticket.controller;
 
-import com.project.common.annotation.SkipTokenVerification;
 import com.project.common.controller.BaseController;
 import com.project.common.response.ApiRes;
 import com.project.common.util.UUIDUtil;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-@SkipTokenVerification
 @RequestMapping("/api/ticket")
 @RestController
 public class TicketController extends BaseController {
@@ -25,9 +23,7 @@ public class TicketController extends BaseController {
     @PostMapping("/grab")
     @Operation(summary = "搶票")
     public ApiRes<Object> grabTicket(@RequestBody GrabTicketRequest req) {
-        if (userId == null) {
-            userId = UUIDUtil.generateUuid();
-        }
+        String userId = UUIDUtil.generateUuid();
 
         // 如果quantity為null，隨機生成1到4的數量
         if (req.getQuantity() == null) {

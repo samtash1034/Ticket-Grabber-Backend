@@ -18,6 +18,7 @@ public class RedisConfig {
     @Bean
     public LettuceConnectionFactory redisConnectionFactory() {
         RedisClusterConfiguration clusterConfig = new RedisClusterConfiguration(
+                // TODO 換成自己的 ip (這邊無法使用 localhost)
                 Arrays.asList("192.168.0.109:7001", "192.168.0.109:7002", "192.168.0.109:7003"));
         clusterConfig.setMaxRedirects(3);
         return new LettuceConnectionFactory(clusterConfig);

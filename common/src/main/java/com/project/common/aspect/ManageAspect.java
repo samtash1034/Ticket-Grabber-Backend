@@ -1,26 +1,18 @@
 package com.project.common.aspect;
 
-import com.project.common.annotation.SkipTokenVerification;
-import com.project.common.controller.BaseController;
 import com.project.common.enums.CommonCode;
 import com.project.common.enums.CommonStatus;
 import com.project.common.exception.BaseException;
-import com.project.common.exception.helper.ValidationExceptionHelper;
 import com.project.common.response.ApiRes;
 import com.project.common.util.MessageFormatterUtil;
-import com.project.common.util.TokenUtil;
 import com.project.common.util.UUIDUtil;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.StopWatch;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
@@ -28,17 +20,11 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.HashMap;
-import java.util.Map;
-
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Slf4j
 @Aspect
 @Component
 public class ManageAspect {
-
-    @Autowired
-    private TokenUtil tokenUtil;
 
     private static final String RES_ERROR_MESSAGE = "服务器错误，请联系管理员，错误识别码:%s";
     private static final String LOG_ERROR_MESSAGE = "错误识别码: %s%n%s";
@@ -63,30 +49,13 @@ public class ManageAspect {
     public Object doAroundAccessCheck(ProceedingJoinPoint pjp) throws Throwable {
         StopWatch stopWatch = new StopWatch();
         ApiRes apiRes = new ApiRes();
-        HttpServletRequest request = null;
         HttpServletResponse response = getCurrentHttpResponse();
-        Object controller = pjp.getTarget();
         stopWatch.start();
 
-        MethodSignature signature = (MethodSignature) pjp.getSignature();
-
         try {
-            request = getCurrentHttpRequest();
-
-            // 检查是否需要进行 Token 验证
-            if (isTokenVerificationRequired(controller)) {
-                String bearerToken = getBearerToken();
-                Map<String, Object> decodedMap = tokenUtil.decodedBearerToken(bearerToken);
-                if (controller instanceof BaseController baseController) {
-                    setBaseController(decodedMap, baseController);
-                }
-            }
-
             apiRes = handleProceedResult(apiRes, pjp.proceed());
 
             setSuccessResponse(apiRes);
-        } catch (ConstraintViolationException e) {
-            apiRes = ValidationExceptionHelper.constraintViolationExceptionHandle(new ApiRes<>(), e);
         } catch (BaseException e) {
             log.error(e.getMessage(), e);
             setResponseStatusCode(e, response);
@@ -110,33 +79,9 @@ public class ManageAspect {
         return apiRes;
     }
 
-    private HttpServletRequest getCurrentHttpRequest() {
-        return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-    }
-
     private HttpServletResponse getCurrentHttpResponse() {
         RequestAttributes attributes = RequestContextHolder.getRequestAttributes();
         return ((ServletRequestAttributes) attributes).getResponse();
-    }
-
-    private String getBearerToken() {
-        return getCurrentHttpRequest().getHeader(AUTHORIZATION);
-    }
-
-    /**
-     * 判断是否需要验证 token
-     *
-     * @param controller
-     * @return
-     */
-    private boolean isTokenVerificationRequired(Object controller) {
-        // 检查控制器类上是否有 @SkipTokenVerification 注解
-        Class<?> controllerClass = controller.getClass();
-        return !controllerClass.isAnnotationPresent(SkipTokenVerification.class);
-    }
-
-    public void setBaseController(Map<String, Object> tokenMap, BaseController controller) {
-        controller.setUserId((String) tokenMap.get(TokenUtil.USERID));
     }
 
     private ApiRes handleProceedResult(ApiRes apiRes, Object result) {

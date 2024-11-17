@@ -3,9 +3,6 @@ package com.project.common.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-/**
- * 核心通用訊息
- */
 @Getter
 @AllArgsConstructor
 public enum CommonStatus {
